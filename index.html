@@ -1,116 +1,133 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phishing Awareness Exercise</title>
+    <title>Phishing Awareness</title>
     <style>
-        /* General Styling */
-        body { 
-            font-family: Arial, sans-serif; 
-            color: #333333; 
-            text-align: center; 
-            padding: 50px; 
+        body, html {
             margin: 0;
-            background: linear-gradient(135deg, #f05053, #e1eec3); /* Attractive background gradient */
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-        }
-        
-        /* Container Styling */
-        .container { 
-            max-width: 600px; 
-            background: rgba(255, 255, 255, 0.9); /* Slightly translucent white */
-            border-radius: 12px; 
-            padding: 20px 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 1.5s ease;
+            text-align: center;
+            color: rgb(255, 255, 255);
+            overflow: hidden;
         }
 
-        /* Title and Subtitle */
-        .title { 
-            font-size: 28px; 
-            font-weight: bold; 
-            color: #cc0000;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            animation: slideIn 1.5s ease forwards;
+        /* Full-screen background */
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            z-index: -1; /* Keep it behind the text */
+            transition: background-image 1s ease-in-out;
         }
 
-        .subtitle { 
-            font-size: 20px; 
-            color: #0073e6; 
-            margin-top: 10px; 
-            margin-bottom: 20px;
-            animation: slideIn 1.8s ease forwards;
-        }
-
-        /* Content and List Styling */
-        .content { 
-            font-size: 16px; 
-            text-align: left;
-            animation: fadeIn 2s ease;
-        }
-
-        ul { 
-            list-style: none; 
-            padding: 0;
-            animation: fadeIn 2.5s ease;
-        }
-
-        ul li {
-            background: #cc0000;
-            color: #ffffff;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
-            transition: transform 0.3s ease, background 0.3s ease;
+        /* Message container for the text */
+        .message-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
             font-weight: bold;
+            z-index: 10;
         }
 
-        ul li:hover {
-            transform: scale(1.05);
-            background: #ff5e5e; /* Lighter red on hover */
+        .message {
+            display: none;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10;
+            animation: fadeIn 2s forwards;
         }
 
-        /* Keyframes for Animations */
+        /* Text fade-in animation */
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        @keyframes slideIn {
-            0% { opacity: 0; transform: translateY(-30px); }
-            100% { opacity: 1; transform: translateY(0); }
+        /* Mitigation steps box */
+        .steps-container {
+            display: none;
+            margin: auto;
+            text-align: left;
+            font-size: 25px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 2px solid red;
+            border-radius: 15px;
+            width: 60%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
         }
 
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            body { padding: 20px; }
-            .title { font-size: 24px; }
-            .subtitle { font-size: 18px; }
-            ul li { font-size: 14px; }
+        .step {
+            margin: 15px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <p class="title">You've Been Part of a Phishing Awareness Exercise!</p>
-        <div class="content">
-            <p>This simulated phishing email was designed to help you identify phishing tactics and stay vigilant against real threats. Here are some key tips to help you avoid phishing attacks:</p>
-            <ul>
-                <li><strong>Verify the Sender:</strong> Check the sender’s email address for spelling or unusual domains.</li>
-                <li><strong>Keep Your Software Updated:</strong> Regularly update your email client and security software to protect against known phishing vulnerabilities.</li>
-                <li><strong>Verify URLs with a Security Tool:</strong> Use URL scanning tools or security plugins to check the safety of unfamiliar links.</li>
-                <li><strong>Limit Sharing Company Email Addresses:</strong> Minimize sharing company emails on public websites to reduce phishing risks.</li>
-                <li><strong>Report Suspicious Emails:</strong> If an email seems unusual, report it to the IT or security team.</li>
-            </ul>
-            <p>Stay vigilant and help us keep our organization secure!</p>
+    <!-- Background container for the changing gifs -->
+    <div class="bg" id="background"></div>
+
+    <!-- Message container for the text -->
+    <div class="message-container">
+        <div class="message" id="message1">
+            YOU ARE UNDER DIGITAL INVESTIGATION🚨
+        </div>
+        <div class="message" id="message2">
+            😁JUST KIDDING... THIS IS PART OF YOUR PHISHING AWARENESS TRAINING!
         </div>
     </div>
+
+    <!-- Mitigation steps -->
+    <div class="steps-container" id="steps">
+        <div class="step">1. Verify the sender’s email domain for authenticity.</div>
+        <div class="step">2. Avoid downloading attachments from unknown sources.</div>
+        <div class="step">3. Double-check links before clicking to ensure they lead to official company pages.</div>
+        <div class="step">4. If the email asks for system changes or admin access urgently, verify it in person.</div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            // Set initial background gif
+            setBackground('url("fog2.jpg")'); // Replace with your first GIF URL
+
+            // Show first message "YOU ARE UNDER ARREST!" for 3 seconds
+            setTimeout(() => {
+                document.getElementById('message1').style.display = 'block';
+            }, 1000); // After 1s
+
+            // Change background and show second message after 3 seconds
+            setTimeout(() => {
+                setBackground('url("ab.jpeg")'); // Replace with your second GIF URL
+                document.getElementById('message1').style.animation = 'fadeOut 2s forwards';
+                document.getElementById('message1').style.display = 'none';
+                document.getElementById('message2').style.display = 'block';
+            }, 4000); // After 4s
+
+            // Show mitigation steps after 6 seconds
+            setTimeout(() => {
+                document.getElementById('message2').style.animation = 'fadeOut 2s forwards';
+                document.getElementById('message2').style.display = 'none';
+                document.getElementById('steps').style.display = 'block';
+            }, 6000); // After 6s
+        }
+
+        // Function to change background gif
+        function setBackground(gifUrl) {
+            document.getElementById('background').style.backgroundImage = gifUrl;
+        }
+    </script>
 </body>
 </html>
