@@ -28,6 +28,8 @@ def track_click():
         # Redirect to phishing awareness page
         response = redirect("https://aakashkumar-2005.github.io/Phishing_Awareness_IT_Head-/")
         response.headers['ngrok-skip-browser-warning'] = 'true'
+        response.headers['User-Agent'] = 'CustomUserAgent/1.0'  # Custom User-Agent
+        response.headers['Cache-Control'] = 'no-store'
         return response
     return "Invalid Request: Missing email parameter", 400
 
@@ -76,5 +78,3 @@ def update_csv(email, status):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# to run this the command is , python app.py
