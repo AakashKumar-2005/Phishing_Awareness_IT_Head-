@@ -9,8 +9,8 @@ SMTP_PORT = 587
 SENDER_EMAIL = 'yamini582006@gmail.com'
 SENDER_PASSWORD = 'qemg fgtb lxzz ixbg'
 
-# Base URL for phishing links (replace with local Flask server IP)
-TRACKING_URL = 'https://c51f-2401-4900-2310-c68a-e9c3-692-8f67-3d91.ngrok-free.app/track-click?email='
+# Base URL for phishing links (replace with your ngrok public URL)
+TRACKING_URL = 'https://fd16-2409-40f4-a1-2b1-a56b-4473-904a-b4c9.ngrok-free.app/track-click?email='
 
 # Read recipient list from CSV
 recipients = pd.read_csv('email_list.csv')
@@ -29,32 +29,34 @@ def send_emails():
             tracking_link = TRACKING_URL + recipient_email + redirecting
 
             # Create the email content
-            subject ="Immediate System Update Required for Security Compliance "
+            subject = "Immediate System Update Required for Security Compliance"
             body = f"""
-            Dear [Employee Name],
-            
-            Our systems require an urgent update to ensure protection against emerging threats. This update is critical to safeguarding company data and maintaining compliance with IT security policies.
+            <html>
+            <body>
+                <p>Dear [Employee Name],</p>
 
-            To proceed, follow the link below to install the update:
+                <p>Our systems require an urgent update to ensure protection against emerging threats. This update is critical to safeguarding company data and maintaining compliance with IT security policies.</p>
 
-            {tracking_link}
+                <p>To proceed, please click the link below:</p>
 
-            Kindly Update it as soon as possible or else your access to key systems may be temporarily restricted.
+                <p><a href="{tracking_link}" style="color: blue; text-decoration: underline;">Click Here to Update</a></p>
 
+                <p>Kindly complete this update as soon as possible, or your access to key systems may be temporarily restricted.</p>
 
-            Best regards,
-            [IT Head Name]
-            Head of IT
-            TVS Mobility
+                <p>Best regards,<br>
+                [IT Head Name]<br>
+                Head of IT<br>
+                TVS Mobility</p>
+            </body>
+            </html>
             """
-            
 
             # Create the MIME message
             msg = MIMEMultipart()
             msg['From'] = SENDER_EMAIL
             msg['To'] = recipient_email
             msg['Subject'] = subject
-            msg.attach(MIMEText(body, 'plain'))
+            msg.attach(MIMEText(body, 'html'))  # Ensure email body is HTML
 
             # Send the email
             server.send_message(msg)
@@ -67,10 +69,5 @@ def send_emails():
     except Exception as e:
         print(f"Error: {e}")
 
-
 # Send the emails
 send_emails()
-
-
-#python emailsend.py  command to run this ..
-# for tracking url , the command is " ngrok http 5000"
