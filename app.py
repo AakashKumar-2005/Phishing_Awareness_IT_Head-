@@ -22,6 +22,7 @@ if not os.path.exists(CSV_FILE):
 @app.route('/track-click', methods=['GET'])
 def track_click():
     email = request.args.get('email')
+    name = request.args.get('name')  # Fetch 'Name' if provided
     name = request.args.get('name', 'Unknown')  # Fetch 'Name' if provided
 
     if email:
@@ -39,6 +40,10 @@ def track_click():
 @app.route('/track-view', methods=['GET'])
 def track_view():
     email = request.args.get('email')
+    name = request.args.get('name')  # Fetch 'Name' if provided
+
+    if email:
+        update_csv(email,name,'Seen the email and Not Opened it')
     name = request.args.get('name', 'Unknown')  # Fetch 'Name' if provided
 
     if email:
@@ -71,6 +76,11 @@ def update_csv(email, status, name=None):
 
         # If the email wasn't found, append a new row
         if not updated:
+            rows.append({'Email': email,'Name': name, 'Status': status})
+
+        # Write back all rows to the CSV
+        with open(CSV_FILE, mode='w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=['Email','Name', 'Status'])
             rows.append({'Name': name or 'Unknown', 'Email': email, 'Status': status})
 
         # Write back all rows to the CSV
