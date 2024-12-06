@@ -15,7 +15,7 @@ file_lock = Lock()
 if not os.path.exists(CSV_FILE):
     with open(CSV_FILE, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Name', 'Email', 'Status'])  # Add 'Name' column
+        writer.writerow(['Email','Name', 'Status'])  # Add 'Name' column
 
 
 # Route to track clicks
@@ -23,7 +23,6 @@ if not os.path.exists(CSV_FILE):
 def track_click():
     email = request.args.get('email')
     name = request.args.get('name')  # Fetch 'Name' if provided
-    name = request.args.get('name', 'Unknown')  # Fetch 'Name' if provided
 
     if email:
         update_csv(email, 'Seen the email and Opened it', name)
@@ -44,10 +43,10 @@ def track_view():
 
     if email:
         update_csv(email,name,'Seen the email and Not Opened it')
-    name = request.args.get('name', 'Unknown')  # Fetch 'Name' if provided
+    name = request.args.get('name')  # Fetch 'Name' if provided
 
     if email:
-        update_csv(email, 'Seen the email and Not Opened it', name)
+        update_csv(email,name,'Seen the email and Not Opened it')
         # Return a 1x1 transparent GIF
         gif_data = b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\x00\x00\x00\xFF\xFF\xFF\x21\xF9\x04\x01\x00\x00\x00\x00\x2C\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x4C\x01\x00\x3B'
         return Response(gif_data, content_type='image/gif')
@@ -81,7 +80,7 @@ def update_csv(email, status, name=None):
         # Write back all rows to the CSV
         with open(CSV_FILE, mode='w', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=['Email','Name', 'Status'])
-            rows.append({'Name': name or 'Unknown', 'Email': email, 'Status': status})
+            rows.append({'Email': email,'Name : name,'Status': status})
 
         # Write back all rows to the CSV
         with open(CSV_FILE, mode='w', newline='') as file:
